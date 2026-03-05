@@ -1,18 +1,29 @@
         </div> <!-- End of Content -->
-    </div> <!-- End of Wrapper -->
+        </div> <!-- End of Wrapper -->
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('sidebarCollapse').addEventListener('click', function() {
-            var sidebar = document.getElementById('sidebar');
-            if (sidebar.style.display === 'none') {
-                sidebar.style.display = 'block';
-            } else {
-                sidebar.style.display = 'none';
-            }
-        });
-    </script>
-</body>
+        <!-- jQuery (required for DataTables) -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Bootstrap JS Bundle -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- DataTables JS -->
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Initialize DataTable
+                $('#dataTable').DataTable();
 
-</html>
+                // Sidebar toggle
+                $('#sidebarCollapse').on('click', function() {
+                    $('#sidebar').toggleClass('active');
+                    if ($('#sidebar').hasClass('active')) {
+                        $('#sidebar').hide();
+                    } else {
+                        $('#sidebar').show();
+                    }
+                });
+            });
+        </script>
+        </body>
+
+        </html>
