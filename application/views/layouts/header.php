@@ -114,8 +114,11 @@
 					<button type="button" id="sidebarCollapse" class="btn btn-primary">
 						<i class="fas fa-align-left"></i>
 					</button>
-					<div class="ms-auto">
-						<span class="text-muted">Welcome, Admin</span>
+					<div class="ms-auto d-flex align-items-center">
+						<span class="text-muted me-3">Welcome, <?php echo $this->session->userdata('username'); ?></span>
+						<a href="<?php echo site_url('Auth/logout'); ?>" class="btn btn-outline-danger btn-sm">
+							<i class="fas fa-sign-out-alt"></i> Logout
+						</a>
 					</div>
 				</div>
 			</nav>
