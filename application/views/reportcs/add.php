@@ -21,7 +21,7 @@
                             <!-- Field 3 & 4 -->
                             <div class="col-md-6 mb-3">
                                 <label for="source" class="form-label mb-2">Source</label>
-                                <select name="source" id="source" class="form-select" required>
+                                <select name="source" id="source" class="form-select" required hx-post="<?= base_url('reportcs/get_sub_source'); ?>" hx-target="#sub_source_container" hx-trigger="change">
                                     <option value="" disabled selected>Pilih Source</option>
                                     <?php foreach ($sources as $s) : ?>
                                         <option value="<?= $s['source']; ?>"><?= $s['source']; ?></option>
@@ -30,9 +30,11 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="sub_source" class="form-label mb-2">Sub Source</label>
-                                <select name="sub_source" id="sub_source" class="form-select" disabled>
-                                    <option value="" disabled selected>Pilih Sub Source</option>
-                                </select>
+                                <div id="sub_source_container">
+                                    <select name="sub_source" id="sub_source" class="form-select" disabled>
+                                        <option value="" disabled selected>Pilih Sub Source</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <!-- Field 5 & 6 -->
@@ -289,47 +291,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function() {
-        $('#source').change(function() {
-            var source = $(this).val();
-            if (source) {
-                $.ajax({
-                    url: "<?= base_url('reportcs/get_sub_source'); ?>",
-                    type: "POST",
-                    data: {
-                        source: source
-                    },
-                    dataType: "json",
-                    success: function(data) {
-                        $('#sub_source').empty();
-                        $('#sub_source').append('<option value="" disabled selected>Pilih Sub Source</option>');
-
-                        // Cek jika data ada dan tidak kosong
-                        if (data && data.length > 0 && data[0].sub_source !== null) {
-                            $.each(data, function(key, value) {
-                                if (value.sub_source !== null) {
-                                    $('#sub_source').append('<option value="' + value.sub_source + '">' + value.sub_source + '</option>');
-                                }
-                            });
-
-                            // Aktifkan jika ada setidaknya satu sub_source yang valid
-                            if ($('#sub_source option').length > 1) {
-                                $('#sub_source').prop('disabled', false);
-                            } else {
-                                $('#sub_source').prop('disabled', true);
-                            }
-                        } else {
-                            $('#sub_source').prop('disabled', true);
-                        }
-                    }
-                });
-            } else {
-                $('#sub_source').empty();
-                $('#sub_source').append('<option value="" disabled selected>Pilih Sub Source</option>');
-                $('#sub_source').prop('disabled', true);
-            }
-        });
-    });
-</script>

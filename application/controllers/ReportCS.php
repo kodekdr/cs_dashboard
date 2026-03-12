@@ -32,6 +32,21 @@ class ReportCS extends CI_Controller
 	{
 		$source = $this->input->post('source');
 		$sub_sources = $this->M_Source->get_sub_source_by_source($source);
-		echo json_encode($sub_sources);
+
+		$options = '<option value="" disabled selected>Pilih Sub Source</option>';
+		$has_valid_sub_source = false;
+
+		if ($sub_sources) {
+			foreach ($sub_sources as $sub) {
+				if ($sub['sub_source'] !== null) {
+					$options .= '<option value="' . $sub['sub_source'] . '">' . $sub['sub_source'] . '</option>';
+					$has_valid_sub_source = true;
+				}
+			}
+		}
+
+		// Tambahkan atribut disabled jika tidak ada sub_source yang valid
+		$disabled_attr = $has_valid_sub_source ? '' : 'disabled';
+		echo '<select name="sub_source" id="sub_source" class="form-select" ' . $disabled_attr . '>' . $options . '</select>';
 	}
 }
