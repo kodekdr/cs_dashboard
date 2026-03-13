@@ -10,6 +10,8 @@ class ReportCS extends CI_Controller
 			redirect('Auth');
 		}
 		$this->load->model('M_Source');
+		$this->load->model('M_Status_Caller');
+		$this->load->model('M_Agen');
 	}
 
 	public function index()
@@ -25,6 +27,8 @@ class ReportCS extends CI_Controller
 	{
 		$data['title'] = 'Tambah Report CS';
 		$data['sources'] = $this->M_Source->get_unique_source();
+		$data['status_callers'] = $this->M_Status_Caller->get_all();
+		$data['agens'] = $this->M_Agen->get_agen_list();
 
 		$this->load->view('layouts/header', $data);
 		$this->load->view('reportcs/add', $data);

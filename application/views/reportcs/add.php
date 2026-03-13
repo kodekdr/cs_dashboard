@@ -40,10 +40,7 @@
                             <!-- Field 5 & 6 -->
                             <div class="col-md-6 mb-3">
                                 <label for="creator" class="form-label mb-2">Creator</label>
-                                <select name="creator" id="creator" class="form-select" required>
-                                    <option value="" disabled selected>Pilih Creator</option>
-                                    <option value="1">Creator 1 (Dummy)</option>
-                                </select>
+                                <input type="text" name="creator" id="creator" class="form-control" value="<?= $this->session->userdata('username'); ?>" readonly required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="create_on" class="form-label mb-2">Create On</label>
@@ -55,14 +52,18 @@
                                 <label for="status_caller" class="form-label mb-2">Status Caller</label>
                                 <select name="status_caller" id="status_caller" class="form-select" required>
                                     <option value="" disabled selected>Pilih Status Caller</option>
-                                    <option value="1">Status 1 (Dummy)</option>
+                                    <?php foreach ($status_callers as $sc) : ?>
+                                        <option value="<?= $sc['id']; ?>"><?= $sc['status_caller_name']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="agen" class="form-label mb-2">Agen</label>
                                 <select name="agen" id="agen" class="form-select">
                                     <option value="" disabled selected>Pilih Agen</option>
-                                    <option value="1">Agen 1 (Dummy)</option>
+                                    <?php foreach ($agens as $agen) : ?>
+                                        <option value="<?= $agen['id_agen']; ?>"><?= 'AGEN ' . $agen['nama_counter']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 
@@ -291,3 +292,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    new TomSelect("#agen", {
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        }
+    });
+</script>
