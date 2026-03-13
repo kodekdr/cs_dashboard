@@ -24,7 +24,7 @@
                                 <select name="source" id="source" class="form-select" required hx-post="<?= base_url('reportcs/get_sub_source'); ?>" hx-target="#sub_source_container" hx-trigger="change">
                                     <option value="" disabled selected>Pilih Source</option>
                                     <?php foreach ($sources as $s) : ?>
-                                        <option value="<?= $s['source']; ?>"><?= $s['source']; ?></option>
+                                        <option value="<?= $s['id']; ?>"><?= $s['source']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -50,7 +50,7 @@
                             <!-- Field 7 & 8 -->
                             <div class="col-md-6 mb-3">
                                 <label for="status_caller" class="form-label mb-2">Status Caller</label>
-                                <select name="status_caller" id="status_caller" class="form-select" required>
+                                <select name="status_caller" id="status_caller" class="form-select" required hx-post="<?= base_url('reportcs/get_agen_dropdown'); ?>" hx-target="#agen_container" hx-trigger="change">
                                     <option value="" disabled selected>Pilih Status Caller</option>
                                     <?php foreach ($status_callers as $sc) : ?>
                                         <option value="<?= $sc['id']; ?>"><?= $sc['status_caller_name']; ?></option>
@@ -59,12 +59,14 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="agen" class="form-label mb-2">Agen</label>
-                                <select name="agen" id="agen" class="form-select">
-                                    <option value="" disabled selected>Pilih Agen</option>
-                                    <?php foreach ($agens as $agen) : ?>
-                                        <option value="<?= $agen['id_agen']; ?>"><?= 'AGEN ' . $agen['nama_counter']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <div id="agen_container">
+                                    <select name="agen" id="agen" class="form-select" disabled>
+                                        <option value="" disabled selected>Pilih Agen</option>
+                                        <?php foreach ($agens as $agen) : ?>
+                                            <option value="<?= $agen['id_agen']; ?>"><?= 'AGEN ' . $agen['nama_counter']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
                             </div>
 
                             <!-- Field 9 & 10 -->
@@ -114,8 +116,9 @@
                                 <label for="express" class="form-label mb-2">Express</label>
                                 <select name="express" id="express" class="form-select" required>
                                     <option value="" disabled selected>Pilih Status Express</option>
-                                    <option value="1">Ya</option>
-                                    <option value="0">Tidak</option>
+                                    <?php foreach ($express_list as $e) : ?>
+                                        <option value="<?= $e['id']; ?>"><?= $e['cs_express_name']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -294,11 +297,11 @@
 </div>
 
 <script>
-    new TomSelect("#agen", {
-        create: false,
-        sortField: {
-            field: "text",
-            direction: "asc"
-        }
-    });
+    // new TomSelect("#agen", {
+    //     create: false,
+    //     sortField: {
+    //         field: "text",
+    //         direction: "asc"
+    //     }
+    // });
 </script>
