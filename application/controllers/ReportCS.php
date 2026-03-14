@@ -13,6 +13,7 @@ class ReportCS extends CI_Controller
 		$this->load->model('M_Status_Caller');
 		$this->load->model('M_Agen');
 		$this->load->model('M_Express');
+		$this->load->model('M_Case');
 	}
 
 	public function index()
@@ -31,10 +32,58 @@ class ReportCS extends CI_Controller
 		$data['status_callers'] = $this->M_Status_Caller->get_all();
 		$data['agens'] = $this->M_Agen->get_agen_list();
 		$data['express_list'] = $this->M_Express->get_all();
+		$data['categories'] = $this->M_Case->get_unique_categories();
 
 		$this->load->view('layouts/header', $data);
 		$this->load->view('reportcs/add', $data);
 		$this->load->view('layouts/footer');
+	}
+
+	public function get_case_types()
+	{
+		$category = $this->input->post('category');
+		$case_types = $this->M_Case->get_case_types_by_category($category);
+
+		$options = '<option value="" disabled selected>Pilih Case Type</option>';
+		$disabled = empty($case_types) ? 'disabled' : '';
+
+		foreach ($case_types as $type) {
+			$options .= '<option value="' . $type['tipecase'] . '">' . $type['tipecase'] . '</option>';
+		}
+
+		// Main dropdown for case_type
+		echo '<select name="case_type" id="case_type" class="form-select" required ' . $disabled . '
+					hx-post="' . base_url('reportcs/get_sub_case_types') . '" 
+					hx-target="#sub_case_type_container" 
+					hx-trigger="change"
+					hx-include="[name=\'category\']">
+				' . $options . '
+			  </select>';
+
+		// Out-of-band swap to reset and disable sub_case_type
+		echo '<div id="sub_case_type_container" hx-swap-oob="true">
+				<select name="sub_case_type" id="sub_case_type" class="form-select" required disabled>
+					<option value="" disabled selected>Pilih Sub Case Type</option>
+				</select>
+			  </div>';
+	}
+
+	public function get_sub_case_types()
+	{
+		$category = $this->input->post('category');
+		$case_type = $this->input->post('case_type');
+		$sub_case_types = $this->M_Case->get_sub_case_types_by_case_type($category, $case_type);
+
+		$options = '<option value="" disabled selected>Pilih Sub Case Type</option>';
+		$disabled = empty($sub_case_types) ? 'disabled' : '';
+
+		foreach ($sub_case_types as $sub) {
+			$options .= '<option value="' . $sub['subtipecase'] . '">' . $sub['subtipecase'] . '</option>';
+		}
+
+		echo '<select name="sub_case_type" id="sub_case_type" class="form-select" required ' . $disabled . '>
+				' . $options . '
+			  </select>';
 	}
 
 	public function get_sub_source()

@@ -123,26 +123,33 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="category" class="form-label mb-2">Category</label>
-                                <select name="category" id="category" class="form-select" required>
+                                <select name="category" id="category" class="form-select" required
+                                    hx-post="<?= base_url('reportcs/get_case_types') ?>"
+                                    hx-target="#case_type_container"
+                                    hx-trigger="change">
                                     <option value="" disabled selected>Pilih Kategori</option>
-                                    <option value="1">Kategori 1 (Dummy)</option>
+                                    <?php foreach ($categories as $cat): ?>
+                                        <option value="<?= $cat['kategori'] ?>"><?= $cat['kategori'] ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 
                             <!-- Field 19 & 20 -->
                             <div class="col-md-6 mb-3">
                                 <label for="case_type" class="form-label mb-2">Case Type</label>
-                                <select name="case_type" id="case_type" class="form-select" required>
-                                    <option value="" disabled selected>Pilih Case Type</option>
-                                    <option value="1">Tipe 1 (Dummy)</option>
-                                </select>
+                                <div id="case_type_container">
+                                    <select name="case_type" id="case_type" class="form-select" required disabled>
+                                        <option value="" disabled selected>Pilih Case Type</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="sub_case_type" class="form-label mb-2">Sub Case Type</label>
-                                <select name="sub_case_type" id="sub_case_type" class="form-select" required>
-                                    <option value="" disabled selected>Pilih Sub Case Type</option>
-                                    <option value="1">Sub Tipe 1 (Dummy)</option>
-                                </select>
+                                <div id="sub_case_type_container">
+                                    <select name="sub_case_type" id="sub_case_type" class="form-select" required disabled>
+                                        <option value="" disabled selected>Pilih Sub Case Type</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <!-- Field 21 & 22 -->
