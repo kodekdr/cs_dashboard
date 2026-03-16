@@ -14,6 +14,8 @@ class ReportCS extends CI_Controller
 		$this->load->model('M_Agen');
 		$this->load->model('M_Express');
 		$this->load->model('M_Case');
+		$this->load->model('M_Priority');
+		$this->load->model('M_Wilayah');
 	}
 
 	public function index()
@@ -33,6 +35,8 @@ class ReportCS extends CI_Controller
 		$data['agens'] = $this->M_Agen->get_agen_list();
 		$data['express_list'] = $this->M_Express->get_all();
 		$data['categories'] = $this->M_Case->get_unique_categories();
+		$data['priorities'] = $this->M_Priority->get_all();
+		$data['kode_wilayah'] = $this->M_Wilayah->get_unique_kode_wilayah();
 
 		$this->load->view('layouts/header', $data);
 		$this->load->view('reportcs/add', $data);
@@ -60,7 +64,6 @@ class ReportCS extends CI_Controller
 				' . $options . '
 			  </select>';
 
-		// Out-of-band swap to reset and disable sub_case_type
 		echo '<div id="sub_case_type_container" hx-swap-oob="true">
 				<select name="sub_case_type" id="sub_case_type" class="form-select" required disabled>
 					<option value="" disabled selected>Pilih Sub Case Type</option>
@@ -128,9 +131,53 @@ class ReportCS extends CI_Controller
 		}
 		$html .= '</select>';
 
-		// Re-initialize TomSelect after HTMX swap
+		// Re-initialize TomSelect
 		if ($disabled === '') {
 			$html .= "<script>new TomSelect('#agen',{create: false,sortField: {field: 'text',direction: 'asc'}});</script>";
+		}
+
+		echo $html;
+	}
+
+	public function get_origin_dropdown()
+	{
+		$id = $this->input->post('origin_city_code');
+		$wilayah_list = $this->M_Wilayah->get_nama_wilayah_by_id($id);
+
+		$disabled = empty($wilayah_list) ? 'disabled' : '';
+
+		$html = '<select name="origin" id="origin" class="form-select" ' . $disabled . '>';
+		$html .= '<option value="" disabled selected>Pilih Origin</option>';
+		foreach ($wilayah_list as $w) {
+			$html .= '<option value="' . $w['id'] . '">' . $w['nama_wilayah'] . '</option>';
+		}
+		$html .= '</select>';
+
+		// Re-initialize TomSelect
+		if ($disabled === '') {
+			$html .= "<script>new TomSelect('#origin',{create: false,sortField: {field: 'text',direction: 'asc'}});</script>";
+		}
+
+		echo $html;
+	}
+
+	public function get_destination_dropdown()
+	{
+		$id = $this->input->post('destination_city_code');
+		$wilayah_list = $this->M_Wilayah->get_nama_wilayah_by_id($id);
+
+		$disabled = empty($wilayah_list) ? 'disabled' : '';
+
+		$html = '<select name="destination_city" id="destination_city" class="form-select" ' . $disabled . '>';
+		$html .= '<option value="" disabled selected>Pilih Dest City</option>';
+		foreach ($wilayah_list as $w) {
+			$html .= '<option value="' . $w['id'] . '">' . $w['nama_wilayah'] . '</option>';
+		}
+		$html .= '</select>';
+
+		// Re-initialize TomSelect after HTMX swap
+		if ($disabled === '') {
+			$html .= "<script>new TomSelect('#destination_city',{create: false,sortField: {field: 'text',direction: 'asc'}});</script>";
 		}
 
 		echo $html;

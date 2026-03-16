@@ -11,4 +11,20 @@ class M_Wilayah extends M_Base
     {
         parent::__construct();
     }
+
+    public function get_unique_kode_wilayah()
+    {
+        return $this->db->select('MIN(id) as id, kode_wilayah')
+            ->group_by('kode_wilayah')
+            ->get($this->table)
+            ->result_array();
+    }
+
+    public function get_nama_wilayah_by_id($id)
+    {
+        $wilayah = $this->db->get_where($this->table, ['id' => $id])->row_array();
+        if (!$wilayah) return [];
+
+        return $this->db->get_where($this->table, ['kode_wilayah' => $wilayah['kode_wilayah']])->result_array();
+    }
 }

@@ -157,42 +157,48 @@
                                 <label for="priority" class="form-label mb-2">Priority</label>
                                 <select name="priority" id="priority" class="form-select" required>
                                     <option value="" disabled selected>Pilih Prioritas</option>
-                                    <option value="1">Low</option>
-                                    <option value="2">Medium</option>
-                                    <option value="3">High</option>
+                                    <?php foreach ($priorities as $p) : ?>
+                                        <option value="<?= $p['id']; ?>"><?= $p['cs_priority_name']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="origin_city_code" class="form-label mb-2">Origin City Code</label>
-                                <select name="origin_city_code" id="origin_city_code" class="form-select" required>
+                                <select name="origin_city_code" id="origin_city_code" class="form-select" required hx-post="<?= base_url('reportcs/get_origin_dropdown'); ?>" hx-target="#origin_container" hx-trigger="change">
                                     <option value="" disabled selected>Pilih Origin City Code</option>
-                                    <option value="1">City Code 1 (Dummy)</option>
+                                    <?php foreach ($kode_wilayah as $kw) : ?>
+                                        <option value="<?= $kw['id']; ?>"><?= $kw['kode_wilayah']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 
                             <!-- Field 23 & 24 -->
                             <div class="col-md-6 mb-3">
                                 <label for="origin" class="form-label mb-2">Origin</label>
-                                <select name="origin" id="origin" class="form-select" required>
-                                    <option value="" disabled selected>Pilih Origin</option>
-                                    <option value="1">Origin 1 (Dummy)</option>
-                                </select>
+                                <div id="origin_container">
+                                    <select name="origin" id="origin" class="form-select" disabled>
+                                        <option value="" disabled selected>Pilih Origin</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="destination_city_code" class="form-label mb-2">Destination City Code</label>
-                                <select name="destination_city_code" id="destination_city_code" class="form-select" required>
+                                <select name="destination_city_code" id="destination_city_code" class="form-select" required hx-post="<?= base_url('reportcs/get_destination_dropdown'); ?>" hx-target="#destination_city_container" hx-trigger="change">
                                     <option value="" disabled selected>Pilih Dest City Code</option>
-                                    <option value="1">Dest City Code 1 (Dummy)</option>
+                                    <?php foreach ($kode_wilayah as $kw) : ?>
+                                        <option value="<?= $kw['id']; ?>"><?= $kw['kode_wilayah']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 
                             <!-- Field 25 & 26 -->
                             <div class="col-md-6 mb-3">
                                 <label for="destination_city" class="form-label mb-2">Destination City</label>
-                                <select name="destination_city" id="destination_city" class="form-select" required>
-                                    <option value="" disabled selected>Pilih Dest City</option>
-                                    <option value="1">Dest City 1 (Dummy)</option>
-                                </select>
+                                <div id="destination_city_container">
+                                    <select name="destination_city" id="destination_city" class="form-select" disabled>
+                                        <option value="" disabled selected>Pilih Dest City</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="zona" class="form-label mb-2">Zona</label>
@@ -304,6 +310,30 @@
 </div>
 
 <script>
+    new TomSelect("#priority", {
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        }
+    });
+
+    new TomSelect("#origin_city_code", {
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        }
+    });
+
+    new TomSelect("#destination_city_code", {
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        }
+    });
+
     // new TomSelect("#agen", {
     //     create: false,
     //     sortField: {
